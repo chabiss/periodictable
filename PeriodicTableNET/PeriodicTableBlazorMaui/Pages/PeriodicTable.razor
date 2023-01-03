@@ -1,0 +1,80 @@
+﻿@page "/"
+@inherits CustomLayout
+@using PeriodicTableData
+@inject PeriodicTableDataEngine PeriodicTableEngine
+
+@if (this.dataModel == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+<body style="background-color:black">
+    <h3>Periodic Table of Elements</h3>
+    <div class="maintable">
+        @foreach (var element in dataModel.Elements)
+        {
+                this.XPos = element.xPos.ToString();
+                this.Ypos = element.yPos.ToString();
+                this.AtomicMass = Math.Round(element.atomic_mass.Value, 3).ToString();
+                this.CategoryColor = this.ConvertCategoryToColor(element.Category);
+                <div class="element" style="grid-column:@XPos; grid-row: @Ypos; background-color:@CategoryColor">
+                    <p class="atomicnumber">@element.Number</p>
+                    <p class="symbol">@element.Symbol</p>
+                    <span class="tooltiptext">@element.Name</span>
+                    <p class="atomicmass">@this.AtomicMass</p>
+                </div>
+        }
+    </div>
+</body>
+}
+
+@code {
+    [Parameter]
+    public string Ypos { get; set; }
+
+    [Parameter]
+    public string XPos { get; set; }
+
+    [Parameter]
+    public string AtomicMass { get; set; }
+
+    [Parameter]
+    public string CategoryColor { get; set; }
+
+
+    private PeriodicTableDataModel dataModel;
+    protected override async Task OnInitializedAsync()
+    {
+        dataModel = await PeriodicTableEngine.InitializeData();
+    }
+
+    internal string ConvertCategoryToColor(string category)
+    {
+        switch(category)
+        {
+            case "diatomic nonmetal":
+                return "#81CC60";
+            case "noble gas":
+                return "#FFA4C3";
+            case "alkali metal":
+                return "#FC8362";
+            case "alkaline earth metal":
+                return "#FFDB62";
+            case "metalloid":
+                return "#FFDB62";
+            case "polyatomic nonmetal":
+                return "#81CC60";
+            case "post-transition metal":
+                return "#C99FC9";
+            case "transition metal":
+                return "#7DC1FF";
+            case "lanthanide":
+                return "#628CFF";
+            case "actinide":
+                return "#62E1BB";
+        }
+
+        return "grey";
+    }
+}
