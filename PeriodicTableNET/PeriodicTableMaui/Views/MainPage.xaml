@@ -17,7 +17,50 @@
             Command="{Binding GetTableElementsCommand}"
             IsRefreshing="{Binding IsRefreshing}">
                 <ContentView>
-                    <CollectionView
+                    <Grid BindableLayout.ItemsSource="{Binding Elements}"
+                          ColumnDefinitions="40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40"
+                          RowDefinitions="50,50,50,50,50,50,50,50,50,50,50">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="dataModels:Element">
+                                <Border MaximumHeightRequest="50" 
+                                        Padding="0" 
+                                        Margin="2" 
+                                        WidthRequest="40" 
+                                        BackgroundColor="Red" 
+                                        ToolTipProperties.Text="{Binding Name}" 
+                                        Grid.Column="{Binding xPos}" 
+                                        Grid.Row="{Binding yPos}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=GoToDetailsCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                    </Border.GestureRecognizers>
+                                    <VerticalStackLayout Padding="0" Margin="0" BackgroundColor="Blue">
+                                        <Label
+                                                Padding="0"
+                                                Margin="2,0,0,0"
+                                                FontSize="10"
+                                                Text="{Binding Number}"
+                                            />
+                                        <Label
+                                                Padding="0" Margin="0,-5"
+                                                Text="{Binding Symbol}"
+                                                FontSize="20"
+                                                HorizontalTextAlignment="Center"
+                                            />
+                                        <Label
+                                                Padding="0,3,0,0"
+                                                Text="{Binding atomic_mass}"
+                                                FontSize="7"
+                                                HorizontalTextAlignment="Center"
+                                            />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </Grid>
+                         
+                    <!--<CollectionView
                     ItemsSource="{Binding Elements}"
                     SelectionMode="None">
                         <CollectionView.ItemsLayout>
@@ -30,7 +73,14 @@
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="dataModels:Element">
-                                <Border MaximumHeightRequest="50" Padding="0" Margin="0" WidthRequest="40" BackgroundColor="Red" ToolTipProperties.Text="{Binding Name}">
+                                <Border MaximumHeightRequest="50" 
+                                        Padding="0" 
+                                        Margin="0" 
+                                        WidthRequest="40" 
+                                        BackgroundColor="Red" 
+                                        ToolTipProperties.Text="{Binding Name}" 
+                                        Grid.Column="{Binding xPos}" 
+                                        Grid.Row="{Binding yPos}">
                                     <Border.GestureRecognizers>
                                         <TapGestureRecognizer 
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=GoToDetailsCommand}"
@@ -59,7 +109,7 @@
                                 </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
-                    </CollectionView>
+                    </CollectionView>-->
                 </ContentView>
             </RefreshView>
 

@@ -16,7 +16,7 @@ else
         {
                 this.XPos = element.xPos.ToString();
                 this.Ypos = element.yPos.ToString();
-                this.AtomicMass = Math.Round(element.atomic_mass.Value, 3).ToString();
+                this.AtomicMass = Math.Round(element.atomic_mass.Value, 4).ToString();
                 this.CategoryColor = this.ConvertCategoryToColor(element.Category);
                 <div class="element" style="grid-column:@XPos; grid-row: @Ypos; background-color:@CategoryColor">
                     <p class="atomicnumber">@element.Number</p>
