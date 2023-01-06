@@ -72,3 +72,14 @@ body {
     visibility: visible;
     transition: all 1s;
 }
+
+.attribution {
+    margin:20px;
+    color:white;
+    text-align:right;
+    font-size:8px;
+}
+
+.title {
+    color: white;
+}

@@ -18,14 +18,14 @@
             IsRefreshing="{Binding IsRefreshing}">
                 <ContentView>
                     <Grid BindableLayout.ItemsSource="{Binding Elements}"
-                          ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"
-                          RowDefinitions="50,50,50,50,50,50,50,50,50,50,50">
+                          ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"
+                          RowDefinitions="60,60,60,60,60,60,60,60,60,60,60">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="dataModels:Element">
-                                <Border MaximumHeightRequest="50" 
+                                <Border HeightRequest="60" 
                                         Padding="0" 
                                         Margin="2" 
-                                        WidthRequest="40" 
+                                        WidthRequest="60" 
                                         BackgroundColor="Red" 
                                         ToolTipProperties.Text="{Binding Name}" 
                                         Grid.Column="{Binding xPos}" 
@@ -35,20 +35,26 @@
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=GoToDetailsCommand}"
                                             CommandParameter="{Binding .}"/>
                                     </Border.GestureRecognizers>
-                                    <VerticalStackLayout Padding="0" Margin="0" BackgroundColor="{Binding Category, Converter={viewmodels:CategoryToColorConverter}}">
+                                    <VerticalStackLayout  Padding="0" Margin="0" BackgroundColor="{Binding Category, Converter={viewmodels:CategoryToColorConverter}}">
                                         <Label
+                                                TextColor="Black"
+                                                FontAttributes="Bold"
                                                 Padding="0"
                                                 Margin="2,0,0,0"
                                                 FontSize="10"
                                                 Text="{Binding Number}"
                                             />
                                         <Label
-                                                Padding="0" Margin="0,-5"
+                                                TextColor="Black"
+                                                FontAttributes="Bold"
+                                                Padding="0" Margin="0,0"
                                                 Text="{Binding Symbol}"
                                                 FontSize="20"
                                                 HorizontalTextAlignment="Center"
                                             />
                                         <Label
+                                                TextColor="Black"
+                                                FontAttributes="Bold"
                                                 Padding="0,3,0,0"
                                                 Text="{Binding atomic_mass}"
                                                 FontSize="7"
@@ -115,10 +121,11 @@
 
             <Button
                 x:Name="InitialData"
-                Text="Initalize"
+                Text="Refresh"
                 SemanticProperties.Hint="Initialize Data Engine"
                 Command="{Binding GetTableElementsCommand}"
                 HorizontalOptions="Center" />
+            <Label FontSize="10" HorizontalTextAlignment="End"  Text="Data from https://github.com/Bowserinator/Periodic-Table-JSON" />
 
         </VerticalStackLayout>
     </ScrollView>
