@@ -6,17 +6,18 @@
              xmlns:dataModels="clr-namespace:PeriodicTableData;assembly=PeriodicTableData"
              x:DataType="viewmodels:MainPageViewModel">
 
-    <ScrollView>
-        <VerticalStackLayout
+        <!--<VerticalStackLayout
             Spacing="25"
             Padding="30,0"
-            VerticalOptions="Center">
+            VerticalOptions="Center">-->
+        <Grid RowDefinitions="*,50,20" ColumnDefinitions="*">
 
             <RefreshView
-            Grid.ColumnSpan="2"
+            Grid.Row="0"
             Command="{Binding GetTableElementsCommand}"
             IsRefreshing="{Binding IsRefreshing}">
-                <ContentView>
+            <ContentView>
+                <ScrollView HorizontalScrollBarVisibility="Always">
                     <Grid BindableLayout.ItemsSource="{Binding Elements}"
                           ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"
                           RowDefinitions="60,60,60,60,60,60,60,60,60,60,60">
@@ -65,7 +66,7 @@
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
                     </Grid>
-                         
+
                     <!--<CollectionView
                     ItemsSource="{Binding Elements}"
                     SelectionMode="None">
@@ -116,18 +117,19 @@
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>-->
-                </ContentView>
-            </RefreshView>
+                </ScrollView>
+            </ContentView>
+        </RefreshView>
 
             <Button
                 x:Name="InitialData"
+                Grid.Row="1"
                 Text="Refresh"
                 SemanticProperties.Hint="Initialize Data Engine"
                 Command="{Binding GetTableElementsCommand}"
                 HorizontalOptions="Center" />
-            <Label FontSize="10" HorizontalTextAlignment="End"  Text="Data from https://github.com/Bowserinator/Periodic-Table-JSON" />
-
-        </VerticalStackLayout>
-    </ScrollView>
+         <Label Grid.Row="2" FontSize="10" HorizontalTextAlignment="End"  Text="Data from https://github.com/Bowserinator/Periodic-Table-JSON" />
+        </Grid>
+        <!--</VerticalStackLayout>-->
 
 </ContentPage>

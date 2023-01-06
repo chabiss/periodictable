@@ -37,6 +37,7 @@ namespace PeriodicTableMaui.ViewModels
 
         public async Task RefreshView()
         {
+            this.IsRefreshing = true;
             PeriodicTableDataModel dataModel = await this.GetDataModelAsync();
             if(dataModel != null)
             {
@@ -46,6 +47,7 @@ namespace PeriodicTableMaui.ViewModels
                     this.Elements.Add(element);
                 }
             }
+            this.IsRefreshing = false;
         }
 
         [RelayCommand]
