@@ -17,7 +17,7 @@
             Command="{Binding GetTableElementsCommand}"
             IsRefreshing="{Binding IsRefreshing}">
             <ContentView>
-                <ScrollView HorizontalScrollBarVisibility="Always">
+                <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Horizontal">
                     <Grid BindableLayout.ItemsSource="{Binding Elements}"
                           ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"
                           RowDefinitions="60,60,60,60,60,60,60,60,60,60,60">
