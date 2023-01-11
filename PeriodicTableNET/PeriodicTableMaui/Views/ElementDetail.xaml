@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PeriodicTableMaui.Views.ElementDetail"
+             xmlns:viewmodels="clr-namespace:PeriodicTableMaui.ViewModels"
+             xmlns:dataModels="clr-namespace:PeriodicTableData;assembly=PeriodicTableData"
+             x:DataType="viewmodels:ElementDetailViewModel"
+             Title="{Binding Element.Name}">
+    <Grid ColumnDefinitions="200,*" RowDefinitions="50,50,50,200,200" BackgroundColor="Black">
+        <Label Style="{StaticResource DescriptionLabel}" Grid.Column="0" Text="Category:" HorizontalTextAlignment="Start"/>
+        <Label Style="{StaticResource DescriptionLabel}" Grid.Column="1" Text="{Binding Element.Category}"  HorizontalTextAlignment="Start" />
+
+        <Label Style="{StaticResource DescriptionLabel}" Grid.Row="1" Grid.Column="0" Text="Atomic Number:" HorizontalTextAlignment="Start" />
+        <Label Style="{StaticResource DescriptionLabel}" Grid.Row="1" Grid.Column="1" Text="{Binding Element.Number}"  HorizontalTextAlignment="Start"/>
+
+        <Label Style="{StaticResource DescriptionLabel}" Grid.Row="2" Grid.Column="0" Text="Atomic Mass:" HorizontalTextAlignment="Start" />
+        <Label Style="{StaticResource DescriptionLabel}" Grid.Row="2" Grid.Column="1" Text="{Binding Element.atomic_mass}"  HorizontalTextAlignment="Start"/>
+
+        <Label Style="{StaticResource DescriptionLabel}" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding Element.Summary}"  HorizontalTextAlignment="Start"/>
+        <Border Grid.Row="4" Grid.ColumnSpan="2" StrokeThickness="3" WidthRequest="200" HeightRequest="200">
+            <Image  Source="{Binding Element.image.Url}" />
+        </Border>
+    </Grid>
+</ContentPage>

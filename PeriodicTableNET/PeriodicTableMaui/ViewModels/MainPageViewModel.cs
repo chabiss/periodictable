@@ -1,4 +1,5 @@
 ﻿using PeriodicTableData;
+using PeriodicTableMaui.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -55,12 +56,11 @@ namespace PeriodicTableMaui.ViewModels
         {
             if (element == null)
                 return;
-            /*
-            await Shell.Current.GoToAsync(nameof(DetailsPage), true, new Dictionary<string, object>
+
+            await Shell.Current.GoToAsync(nameof(ElementDetail), true, new Dictionary<string, object>
             {
                 {"element", element }
             });
-            */
         }
     }
 }

@@ -1,8 +1,7 @@
-### UI Tools team specific items ###
 # Directories
 bin-*/
 obj-*/
-Designer/out
+.vs-*/
 
 # Files
 Resource.designer.cs

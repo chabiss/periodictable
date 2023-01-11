@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PeriodicTableMaui.MainPage"
+             x:Class="PeriodicTableMaui.Views.MainPage"
              xmlns:viewmodels="clr-namespace:PeriodicTableMaui.ViewModels"
              xmlns:dataModels="clr-namespace:PeriodicTableData;assembly=PeriodicTableData"
-             x:DataType="viewmodels:MainPageViewModel">
+             x:DataType="viewmodels:MainPageViewModel"
+             BackgroundColor="Black">
 
         <!--<VerticalStackLayout
             Spacing="25"
             Padding="30,0"
             VerticalOptions="Center">-->
-        <Grid RowDefinitions="*,50,20" ColumnDefinitions="*">
+        <Grid RowDefinitions="*,50,20" ColumnDefinitions="*" BackgroundColor="Black">
 
             <RefreshView
             Grid.Row="0"

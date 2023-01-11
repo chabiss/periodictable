@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using PeriodicTableData;
 using PeriodicTableMaui.ViewModels;
+using PeriodicTableMaui.Views;
 
 namespace PeriodicTableMaui
 {
@@ -20,9 +21,12 @@ namespace PeriodicTableMaui
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
+            builder.Services.AddSingleton<IMap>(Map.Default);
             builder.Services.AddSingleton<PeriodicTableDataEngine>();
             builder.Services.AddSingleton<MainPageViewModel>();
             builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<ElementDetail>();
+            builder.Services.AddSingleton<ElementDetailViewModel>();
             return builder.Build();
         }
     }

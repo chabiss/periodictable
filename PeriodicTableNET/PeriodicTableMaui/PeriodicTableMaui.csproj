@@ -57,4 +57,10 @@
 	  <ProjectReference Include="..\PeriodicTableData\PeriodicTableData.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Update="Views\ElementDetail.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>
