@@ -24,6 +24,12 @@ namespace PeriodicTableMaui.ViewModels
         [ObservableProperty]
         bool isRefreshing;
 
+        [ObservableProperty]
+        bool isDetailPaneVisible;
+
+        [ObservableProperty]
+        PeriodicTableData.Element selectedElement;
+
         [RelayCommand]
         public async Task GetTableElementsAsync()
         {
@@ -55,7 +61,18 @@ namespace PeriodicTableMaui.ViewModels
         async Task GoToDetails(PeriodicTableData.Element element)
         {
             if (element == null)
+            {
                 return;
+            }
+
+            this.SelectedElement = element;
+                
+
+            // If the detail pane is visible, we don't want to navigate to the detail page. 
+            if (this.IsDetailPaneVisible)
+            {
+                return;
+            }
 
             await Shell.Current.GoToAsync(nameof(ElementDetail), true, new Dictionary<string, object>
             {

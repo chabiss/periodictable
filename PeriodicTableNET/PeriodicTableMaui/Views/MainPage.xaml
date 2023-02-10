@@ -6,6 +6,61 @@
              xmlns:dataModels="clr-namespace:PeriodicTableData;assembly=PeriodicTableData"
              x:DataType="viewmodels:MainPageViewModel"
              BackgroundColor="Black">
+    <ContentPage.Resources>
+        <Style x:Key="DetailPaneStyle" TargetType="VerticalStackLayout">
+            <Setter Property="IsVisible" Value="True" />
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup>
+                        <VisualState x:Name="Collapse">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="0" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Property="IsVisible" Value="False" />
+                                <!--<Setter Property="{Binding IsDetailPaneVisible}"  Value="False" />-->
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Visible">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="800" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Property="IsVisible" Value="True" />
+                                <!--<Setter Property="{Binding IsDetailPaneVisible}"  Value="True" />-->
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+        <Style x:Key="MainLayoutStyle" TargetType="Grid">
+            <Setter Property="ColumnDefinitions" Value="*,400" />
+            <Setter Property="RowDefinitions" Value="*" />
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup>
+                        <VisualState x:Name="Collapse">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="0" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Property="ColumnDefinitions" Value="*" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Visible">
+                            <VisualState.StateTriggers>
+                                <AdaptiveTrigger MinWindowWidth="800" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Property="ColumnDefinitions" Value="*,400" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
 
         <!--<VerticalStackLayout
             Spacing="25"
@@ -13,116 +68,140 @@
             VerticalOptions="Center">-->
         <Grid RowDefinitions="*,50,20" ColumnDefinitions="*" BackgroundColor="Black">
 
-            <RefreshView
+        <RefreshView
             Grid.Row="0"
             Command="{Binding GetTableElementsCommand}"
             IsRefreshing="{Binding IsRefreshing}">
             <ContentView>
-                <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Horizontal">
-                    <Grid BindableLayout.ItemsSource="{Binding Elements}"
-                          ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"
-                          RowDefinitions="60,60,60,60,60,60,60,60,60,60,60">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="dataModels:Element">
-                                <Border HeightRequest="60" 
-                                        Padding="0" 
-                                        Margin="2" 
-                                        WidthRequest="60" 
-                                        BackgroundColor="Red" 
-                                        ToolTipProperties.Text="{Binding Name}" 
-                                        Grid.Column="{Binding xPos}" 
-                                        Grid.Row="{Binding yPos}">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer 
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=GoToDetailsCommand}"
-                                            CommandParameter="{Binding .}"/>
-                                    </Border.GestureRecognizers>
-                                    <VerticalStackLayout  Padding="0" Margin="0" BackgroundColor="{Binding Category, Converter={viewmodels:CategoryToColorConverter}}">
-                                        <Label
-                                                TextColor="Black"
-                                                FontAttributes="Bold"
-                                                Padding="0"
-                                                Margin="2,0,0,0"
-                                                FontSize="10"
-                                                Text="{Binding Number}"
-                                            />
-                                        <Label
-                                                TextColor="Black"
-                                                FontAttributes="Bold"
-                                                Padding="0" Margin="0,0"
-                                                Text="{Binding Symbol}"
-                                                FontSize="20"
-                                                HorizontalTextAlignment="Center"
-                                            />
-                                        <Label
-                                                TextColor="Black"
-                                                FontAttributes="Bold"
-                                                Padding="0,3,0,0"
-                                                Text="{Binding atomic_mass}"
-                                                FontSize="7"
-                                                HorizontalTextAlignment="Center"
-                                            />
-                                    </VerticalStackLayout>
-                                </Border>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </Grid>
+                <!-- https://github.com/dotnet/maui/issues/710 prevents having a MaxWidth 
+                <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition MaxWidth="400"/>
+                    </Grid.ColumnDefinitions>
+                -->
+                <Grid x:Name="MainLayout" Style="{StaticResource MainLayoutStyle}">
 
-                    <!--<CollectionView
-                    ItemsSource="{Binding Elements}"
-                    SelectionMode="None">
-                        <CollectionView.ItemsLayout>
-                            <GridItemsLayout 
-                                x:Name="PeriodicTableViewLayout"
-                                Orientation="Vertical"
-                                Span="18"
-                                VerticalItemSpacing="2"
-                                HorizontalItemSpacing="2" />
-                        </CollectionView.ItemsLayout>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="dataModels:Element">
-                                <Border MaximumHeightRequest="50" 
-                                        Padding="0" 
-                                        Margin="0" 
-                                        WidthRequest="40" 
-                                        BackgroundColor="Red" 
-                                        ToolTipProperties.Text="{Binding Name}" 
-                                        Grid.Column="{Binding xPos}" 
-                                        Grid.Row="{Binding yPos}">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer 
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=GoToDetailsCommand}"
-                                            CommandParameter="{Binding .}"/>
-                                    </Border.GestureRecognizers>
-                                    <VerticalStackLayout Padding="0" Margin="0" BackgroundColor="Blue">
-                                        <Label
-                                                Padding="0"
-                                                Margin="2,0,0,0"
-                                                FontSize="10"
-                                                Text="{Binding Number}"
-                                            />
-                                        <Label
-                                                Padding="0" Margin="0,-5"
-                                                Text="{Binding Symbol}"
-                                                FontSize="20"
-                                                HorizontalTextAlignment="Center"
-                                            />
-                                        <Label
-                                                Padding="0,3,0,0"
-                                                Text="{Binding atomic_mass}"
-                                                FontSize="7"
-                                                HorizontalTextAlignment="Center"
-                                            />
-                                    </VerticalStackLayout>
-                                </Border>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>-->
-                </ScrollView>
+                    <ScrollView  Grid.Column="0" HorizontalScrollBarVisibility="Always" Orientation="Horizontal" >
+                        <Grid BindableLayout.ItemsSource="{Binding Elements}"
+                              ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"
+                              RowDefinitions="60,60,60,60,60,60,60,60,60,60,60" MaximumWidthRequest="1244">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="dataModels:Element">
+                                    <Border HeightRequest="60" 
+                                            Padding="0" 
+                                            Margin="0,0,0,0" 
+                                            WidthRequest="60" 
+                                            ToolTipProperties.Text="{Binding Name}" 
+                                            Grid.Column="{Binding xPos}" 
+                                            Grid.Row="{Binding yPos}">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer 
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=GoToDetailsCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                        </Border.GestureRecognizers>
+                                        <VerticalStackLayout  Padding="0" Margin="0" BackgroundColor="{Binding Category, Converter={viewmodels:CategoryToColorConverter}}">
+                                            <Label
+                                                    TextColor="Black"
+                                                    FontAttributes="Bold"
+                                                    Padding="0"
+                                                    Margin="2,0,0,0"
+                                                    FontSize="10"
+                                                    Text="{Binding Number}"
+                                                />
+                                            <Label
+                                                    TextColor="Black"
+                                                    FontAttributes="Bold"
+                                                    Padding="0" Margin="0,0"
+                                                    Text="{Binding Symbol}"
+                                                    FontSize="20"
+                                                    HorizontalTextAlignment="Center"
+                                                />
+                                            <Label
+                                                    TextColor="Black"
+                                                    FontAttributes="Bold"
+                                                    Padding="0,3,0,0"
+                                                    Text="{Binding atomic_mass}"
+                                                    FontSize="7"
+                                                    HorizontalTextAlignment="Center"
+                                                />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </Grid>
+
+                        <!--<CollectionView
+                        ItemsSource="{Binding Elements}"
+                        SelectionMode="None">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout 
+                                    x:Name="PeriodicTableViewLayout"
+                                    Orientation="Vertical"
+                                    Span="18"
+                                    VerticalItemSpacing="2"
+                                    HorizontalItemSpacing="2" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="dataModels:Element">
+                                    <Border MaximumHeightRequest="50" 
+                                            Padding="0" 
+                                            Margin="0" 
+                                            WidthRequest="40" 
+                                            BackgroundColor="Red" 
+                                            ToolTipProperties.Text="{Binding Name}" 
+                                            Grid.Column="{Binding xPos}" 
+                                            Grid.Row="{Binding yPos}">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer 
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=GoToDetailsCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                        </Border.GestureRecognizers>
+                                        <VerticalStackLayout Padding="0" Margin="0" BackgroundColor="Blue">
+                                            <Label
+                                                    Padding="0"
+                                                    Margin="2,0,0,0"
+                                                    FontSize="10"
+                                                    Text="{Binding Number}"
+                                                />
+                                            <Label
+                                                    Padding="0" Margin="0,-5"
+                                                    Text="{Binding Symbol}"
+                                                    FontSize="20"
+                                                    HorizontalTextAlignment="Center"
+                                                />
+                                            <Label
+                                                    Padding="0,3,0,0"
+                                                    Text="{Binding atomic_mass}"
+                                                    FontSize="7"
+                                                    HorizontalTextAlignment="Center"
+                                                />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>-->
+                    </ScrollView>
+                    <VerticalStackLayout x:Name="DetailPane" Grid.Column="1" Style="{StaticResource DetailPaneStyle}" BindingContext="{Binding SelectedElement}" >
+                        <Grid ColumnDefinitions="200,*" RowDefinitions="50,50,50,200,200" BackgroundColor="Black" x:DataType="dataModels:Element">
+                            <Label Style="{StaticResource DescriptionLabel}" Grid.Column="0" Text="Category:" HorizontalTextAlignment="Start"/>
+                            <Label Style="{StaticResource DescriptionLabel}" Grid.Column="1" Text="{Binding Category}"  HorizontalTextAlignment="Start" />
+
+                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="1" Grid.Column="0" Text="Atomic Number:" HorizontalTextAlignment="Start" />
+                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="1" Grid.Column="1" Text="{Binding Number}"  HorizontalTextAlignment="Start"/>
+
+                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="2" Grid.Column="0" Text="Atomic Mass:" HorizontalTextAlignment="Start" />
+                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="2" Grid.Column="1" Text="{Binding atomic_mass}"  HorizontalTextAlignment="Start"/>
+
+                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding Summary}"  HorizontalTextAlignment="Start"/>
+                            <Border Grid.Row="4" Grid.ColumnSpan="2" StrokeThickness="3" WidthRequest="200" HeightRequest="200">
+                                <Image  Source="{Binding image.Url}" />
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Grid>
             </ContentView>
         </RefreshView>
-
-            <Button
+           <Button
                 x:Name="InitialData"
                 Grid.Row="1"
                 Text="Refresh"
