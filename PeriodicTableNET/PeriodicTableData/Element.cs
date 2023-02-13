@@ -33,9 +33,10 @@ namespace PeriodicTableData
         public string? ElectronConfiguration { get; set; }
         public string? electron_configuration_semantic { get; set; }
         public float? electron_affinity { get; set; }
-        public float? electronegativity_pauling {get; set; }
+        public float? electronegativity_pauling { get; set; }
         public List<float>? ionization_energies { get; set; }
         public string? cpkHex { get; set; }
         public Image? image { get; set; }
+        public bool IsSelected { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace PeriodicTableMaui.ViewModels
     {
         private PeriodicTableDataEngine dataEngine;
 
-        public ObservableCollection<PeriodicTableData.Element> Elements { get; } = new();
+        public ObservableCollection<ElementViewModel> Elements { get; } = new();
         
         public MainPageViewModel(PeriodicTableDataEngine dataEngine)
         {
@@ -28,7 +28,7 @@ namespace PeriodicTableMaui.ViewModels
         bool isDetailPaneVisible;
 
         [ObservableProperty]
-        PeriodicTableData.Element selectedElement;
+        ElementViewModel selectedElement;
 
         [RelayCommand]
         public async Task GetTableElementsAsync()
@@ -51,21 +51,27 @@ namespace PeriodicTableMaui.ViewModels
                 this.Elements.Clear(); ;
                 foreach(var element in dataModel.Elements) 
                 {
-                    this.Elements.Add(element);
+                    this.Elements.Add(new ElementViewModel(element));
                 }
             }
             this.IsRefreshing = false;
         }
 
         [RelayCommand]
-        async Task GoToDetails(PeriodicTableData.Element element)
+        async Task GoToDetails(ElementViewModel elementViewModel)
         {
-            if (element == null)
+            if (elementViewModel == null)
             {
                 return;
             }
 
-            this.SelectedElement = element;
+            if(this.SelectedElement != null)
+            {
+                this.SelectedElement.IsSelected = false;
+            }
+
+            this.SelectedElement = elementViewModel;
+            this.SelectedElement.IsSelected = true;
                 
 
             // If the detail pane is visible, we don't want to navigate to the detail page. 
@@ -76,7 +82,7 @@ namespace PeriodicTableMaui.ViewModels
 
             await Shell.Current.GoToAsync(nameof(ElementDetail), true, new Dictionary<string, object>
             {
-                {"element", element }
+                {"element", this.SelectedElement.Element }
             });
         }
     }

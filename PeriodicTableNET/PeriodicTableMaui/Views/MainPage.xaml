@@ -84,35 +84,52 @@
                     <ScrollView  Grid.Column="0" HorizontalScrollBarVisibility="Always" Orientation="Horizontal" >
                         <Grid BindableLayout.ItemsSource="{Binding Elements}"
                               ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"
-                              RowDefinitions="60,60,60,60,60,60,60,60,60,60,60" MaximumWidthRequest="1244">
+                              RowDefinitions="62,62,62,62,62,62,62,62,62,62,62" MaximumWidthRequest="1244" MinimumHeightRequest="1100">
                             <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="dataModels:Element">
-                                    <Border HeightRequest="60" 
+                                <DataTemplate x:DataType="viewmodels:ElementViewModel">
+                                    <Border x:Name="SelectionBorder"
+                                            HeightRequest="60"
                                             Padding="0" 
-                                            Margin="0,0,0,0" 
-                                            WidthRequest="60" 
-                                            ToolTipProperties.Text="{Binding Name}" 
-                                            Grid.Column="{Binding xPos}" 
-                                            Grid.Row="{Binding yPos}">
+                                            Margin="2" 
+                                            WidthRequest="60"
+                                            Stroke="{Binding IsSelected, Converter={viewmodels:SelectedColorValueConverter}}"
+                                            BackgroundColor="{Binding IsSelected, Converter={viewmodels:SelectedColorValueConverter}}"
+                                            ToolTipProperties.Text="{Binding Element.Name}" 
+                                            Grid.Column="{Binding Element.xPos}" 
+                                            Grid.Row="{Binding Element.yPos}">
+
+                                        <Border.Triggers>
+                                            <DataTrigger TargetType="Border"
+                                                         Binding="{Binding IsSelected}" 
+                                                         Value="True">
+                                                <Setter Property="BackgroundColor" Value="Red" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Border"
+                                                         Binding="{Binding IsSelected}" 
+                                                         Value="False">
+                                                <Setter Property="BackgroundColor" Value="Transparent" />
+                                            </DataTrigger>
+                                        </Border.Triggers>
+
                                         <Border.GestureRecognizers>
                                             <TapGestureRecognizer 
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=GoToDetailsCommand}"
                                                 CommandParameter="{Binding .}"/>
                                         </Border.GestureRecognizers>
-                                        <VerticalStackLayout  Padding="0" Margin="0" BackgroundColor="{Binding Category, Converter={viewmodels:CategoryToColorConverter}}">
+                                        <VerticalStackLayout Padding="0" Margin="0" BackgroundColor="{Binding Element.Category, Converter={viewmodels:CategoryToColorConverter}}">
                                             <Label
                                                     TextColor="Black"
                                                     FontAttributes="Bold"
                                                     Padding="0"
                                                     Margin="2,0,0,0"
                                                     FontSize="10"
-                                                    Text="{Binding Number}"
+                                                    Text="{Binding Element.Number}"
                                                 />
                                             <Label
                                                     TextColor="Black"
                                                     FontAttributes="Bold"
                                                     Padding="0" Margin="0,0"
-                                                    Text="{Binding Symbol}"
+                                                    Text="{Binding Element.Symbol}"
                                                     FontSize="20"
                                                     HorizontalTextAlignment="Center"
                                                 />
@@ -120,7 +137,7 @@
                                                     TextColor="Black"
                                                     FontAttributes="Bold"
                                                     Padding="0,3,0,0"
-                                                    Text="{Binding atomic_mass}"
+                                                    Text="{Binding Element.atomic_mass}"
                                                     FontSize="7"
                                                     HorizontalTextAlignment="Center"
                                                 />
@@ -181,8 +198,9 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>-->
                     </ScrollView>
-                    <VerticalStackLayout x:Name="DetailPane" Grid.Column="1" Style="{StaticResource DetailPaneStyle}" BindingContext="{Binding SelectedElement}" >
-                        <Grid ColumnDefinitions="200,*" RowDefinitions="50,50,50,200,200" BackgroundColor="Black" x:DataType="dataModels:Element">
+                    <VerticalStackLayout x:Name="DetailPane" Margin="10" Grid.Column="1" Style="{StaticResource DetailPaneStyle}" BindingContext="{Binding SelectedElement.Element}">
+                        <Label Text="{Binding Name}"  HorizontalOptions="Center" Margin="0,20" FontSize="40" x:DataType="dataModels:Element" />
+                        <Grid ColumnDefinitions="200,*" RowDefinitions="50,50,50,300,300" BackgroundColor="Black" x:DataType="dataModels:Element">
                             <Label Style="{StaticResource DescriptionLabel}" Grid.Column="0" Text="Category:" HorizontalTextAlignment="Start"/>
                             <Label Style="{StaticResource DescriptionLabel}" Grid.Column="1" Text="{Binding Category}"  HorizontalTextAlignment="Start" />
 
@@ -193,9 +211,10 @@
                             <Label Style="{StaticResource DescriptionLabel}" Grid.Row="2" Grid.Column="1" Text="{Binding atomic_mass}"  HorizontalTextAlignment="Start"/>
 
                             <Label Style="{StaticResource DescriptionLabel}" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding Summary}"  HorizontalTextAlignment="Start"/>
-                            <Border Grid.Row="4" Grid.ColumnSpan="2" StrokeThickness="3" WidthRequest="200" HeightRequest="200">
-                                <Image  Source="{Binding image.Url}" />
-                            </Border>
+                            <VerticalStackLayout Grid.Row="4" Grid.ColumnSpan="2">
+                                <Image Source="{Binding image.Url}" HeightRequest="200" WidthRequest="200"/>
+                                <Label Text="{Binding image.Url}" FontSize="8"/>
+                            </VerticalStackLayout>
                         </Grid>
                     </VerticalStackLayout>
                 </Grid>
