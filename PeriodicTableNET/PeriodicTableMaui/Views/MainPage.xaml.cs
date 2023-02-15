@@ -14,18 +14,16 @@ namespace PeriodicTableMaui.Views
 
         private void DetailPane_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == "IsVisible")
+            if (e.PropertyName == "Show")
             {
                 MainPageViewModel viewModel = this.BindingContext as MainPageViewModel;
-                if (viewModel != null) {
+                if (viewModel != null)
+                {
+                    // <local:ElementDetailPane local:ElementDetailPane.Show="{Binding IsDetailPaneVisible, Mode=OneWayToSource}">
+                    // The bound broperty gets set to false, but never to true even though we received the event here
                     viewModel.IsDetailPaneVisible = this.DetailPane.IsVisible;
                 }
             }
-        }
-
-        private void OnCounterClicked(object sender, EventArgs e)
-        {
-            
         }
     }
 }

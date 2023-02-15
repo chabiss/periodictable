@@ -2,12 +2,13 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PeriodicTableMaui.Views.MainPage"
+             xmlns:local="clr-namespace:PeriodicTableMaui.Views"
              xmlns:viewmodels="clr-namespace:PeriodicTableMaui.ViewModels"
              xmlns:dataModels="clr-namespace:PeriodicTableData;assembly=PeriodicTableData"
              x:DataType="viewmodels:MainPageViewModel"
              BackgroundColor="Black">
     <ContentPage.Resources>
-        <Style x:Key="DetailPaneStyle" TargetType="VerticalStackLayout">
+        <Style x:Key="DetailPaneStyle" TargetType="local:ElementDetailPane">
             <Setter Property="IsVisible" Value="True" />
             <Setter Property="VisualStateManager.VisualStateGroups">
                 <VisualStateGroupList>
@@ -18,7 +19,7 @@
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
                                 <Setter Property="IsVisible" Value="False" />
-                                <!--<Setter Property="{Binding IsDetailPaneVisible}"  Value="False" />-->
+                                <Setter Property="local:ElementDetailPane.Show" Value="False" />
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState x:Name="Visible">
@@ -27,7 +28,7 @@
                             </VisualState.StateTriggers>
                             <VisualState.Setters>
                                 <Setter Property="IsVisible" Value="True" />
-                                <!--<Setter Property="{Binding IsDetailPaneVisible}"  Value="True" />-->
+                                <Setter Property="local:ElementDetailPane.Show" Value="True" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
@@ -198,25 +199,25 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>-->
                     </ScrollView>
-                    <VerticalStackLayout x:Name="DetailPane" Margin="10" Grid.Column="1" Style="{StaticResource DetailPaneStyle}" BindingContext="{Binding SelectedElement.Element}">
-                        <Label Text="{Binding Name}"  HorizontalOptions="Center" Margin="0,20" FontSize="40" x:DataType="dataModels:Element" />
-                        <Grid ColumnDefinitions="200,*" RowDefinitions="50,50,50,300,300" BackgroundColor="Black" x:DataType="dataModels:Element">
-                            <Label Style="{StaticResource DescriptionLabel}" Grid.Column="0" Text="Category:" HorizontalTextAlignment="Start"/>
-                            <Label Style="{StaticResource DescriptionLabel}" Grid.Column="1" Text="{Binding Category}"  HorizontalTextAlignment="Start" />
+                     <local:ElementDetailPane x:Name="DetailPane" Margin="10" Grid.Column="1" Style="{StaticResource DetailPaneStyle}" local:ElementDetailPane.Show="{Binding IsDetailPaneVisible, Mode=OneWayToSource}">
+                        <Grid ColumnDefinitions="200,*" RowDefinitions="100,50,50,50,300,300" BackgroundColor="Black" BindingContext="{Binding SelectedElement.Element}" >
+                            <Label Text="{Binding Name}"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalOptions="Center" Margin="0,20" FontSize="40" x:DataType="dataModels:Element" />
+                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="1" Grid.Column="0" Text="Category:" HorizontalTextAlignment="Start" x:DataType="dataModels:Element" />
+                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="1" Grid.Column="1" Text="{Binding Category}"  HorizontalTextAlignment="Start"  x:DataType="dataModels:Element" />
 
-                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="1" Grid.Column="0" Text="Atomic Number:" HorizontalTextAlignment="Start" />
-                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="1" Grid.Column="1" Text="{Binding Number}"  HorizontalTextAlignment="Start"/>
+                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="2" Grid.Column="0" Text="Atomic Number:" HorizontalTextAlignment="Start" x:DataType="dataModels:Element" />
+                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="2" Grid.Column="1" Text="{Binding Number}"  HorizontalTextAlignment="Start" x:DataType="dataModels:Element" />
 
-                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="2" Grid.Column="0" Text="Atomic Mass:" HorizontalTextAlignment="Start" />
-                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="2" Grid.Column="1" Text="{Binding atomic_mass}"  HorizontalTextAlignment="Start"/>
+                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="3" Grid.Column="0" Text="Atomic Mass:" HorizontalTextAlignment="Start" x:DataType="dataModels:Element" />
+                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="3" Grid.Column="1" Text="{Binding atomic_mass}"  HorizontalTextAlignment="Start" x:DataType="dataModels:Element" />
 
-                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding Summary}"  HorizontalTextAlignment="Start"/>
-                            <VerticalStackLayout Grid.Row="4" Grid.ColumnSpan="2">
+                            <Label Style="{StaticResource DescriptionLabel}" Grid.Row="4" Grid.ColumnSpan="2" Text="{Binding Summary}"  HorizontalTextAlignment="Start" x:DataType="dataModels:Element" />
+                            <VerticalStackLayout Grid.Row="5" Grid.ColumnSpan="2" x:DataType="dataModels:Element">
                                 <Image Source="{Binding image.Url}" HeightRequest="200" WidthRequest="200"/>
                                 <Label Text="{Binding image.Url}" FontSize="8"/>
                             </VerticalStackLayout>
                         </Grid>
-                    </VerticalStackLayout>
+                    </local:ElementDetailPane>
                 </Grid>
             </ContentView>
         </RefreshView>
