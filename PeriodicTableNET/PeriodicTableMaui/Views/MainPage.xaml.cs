@@ -4,12 +4,20 @@ namespace PeriodicTableMaui.Views
 {
     public partial class MainPage : ContentPage
     {
+        private MainPageViewModel viewModel;
+
         public MainPage(MainPageViewModel viewModel)
         {
             InitializeComponent();
-            this.BindingContext = viewModel;
-            Task.Run(async () => await viewModel.RefreshView());
+            this.viewModel = viewModel;
             this.DetailPane.PropertyChanged += DetailPane_PropertyChanged;
+            this.Loaded += MainPage_Loaded;
+        }
+
+        private void MainPage_Loaded(object sender, EventArgs e)
+        {
+            this.BindingContext = this.viewModel;
+            Task.Run(async () => await viewModel.RefreshView());
         }
 
         private void DetailPane_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -21,7 +29,7 @@ namespace PeriodicTableMaui.Views
                 {
                     // <local:ElementDetailPane local:ElementDetailPane.Show="{Binding IsDetailPaneVisible, Mode=OneWayToSource}">
                     // The bound property gets set to false, but never to true even though we received the event here
-                    viewModel.IsDetailPaneVisible = this.DetailPane.IsVisible;
+                    // viewModel.IsDetailPaneVisible = this.DetailPane.IsVisible;
                 }
             }
         }

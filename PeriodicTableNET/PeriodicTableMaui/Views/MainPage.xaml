@@ -83,7 +83,7 @@
                 <Grid x:Name="MainLayout" Style="{StaticResource MainLayoutStyle}">
 
                     <ScrollView  Grid.Column="0" HorizontalScrollBarVisibility="Always" Orientation="Horizontal" >
-                        <Grid BindableLayout.ItemsSource="{Binding Elements}"
+                        <Grid BindableLayout.ItemsSource="{Binding Elements}" 
                               ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"
                               RowDefinitions="62,62,62,62,62,62,62,62,62,62,62" MaximumWidthRequest="1244" MinimumHeightRequest="1100">
                             <BindableLayout.ItemTemplate>
