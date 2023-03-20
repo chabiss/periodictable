@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using PeriodicTableBlazorMaui.Data;
 using PeriodicTableData;
+using MudBlazor.Services;
 
 namespace PeriodicTableBlazorMaui
 {
@@ -25,6 +26,7 @@ namespace PeriodicTableBlazorMaui
 
             builder.Services.AddSingleton<WeatherForecastService>();
             builder.Services.AddSingleton<PeriodicTableDataEngine>();
+            builder.Services.AddMudServices();
 
             return builder.Build();
         }

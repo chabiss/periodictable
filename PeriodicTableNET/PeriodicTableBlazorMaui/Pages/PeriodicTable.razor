@@ -11,22 +11,23 @@ else
 {
 <body style="background-color:black">
     <h3 class="title">Periodic Table of Elements</h3>
-    <div class="maintable">
-        @foreach (var element in dataModel.Elements)
-        {
-                this.XPos = element.xPos.ToString();
-                this.Ypos = element.yPos.ToString();
-                this.AtomicMass = Math.Round(element.atomic_mass.Value, 4).ToString();
-                this.CategoryColor = this.ConvertCategoryToColor(element.Category);
-                <div class="element" style="grid-column:@XPos; grid-row: @Ypos; background-color:@CategoryColor">
-                    <p class="atomicnumber">@element.Number</p>
-                    <p class="symbol">@element.Symbol</p>
-                    <span class="tooltiptext">@element.Name</span>
-                    <p class="atomicmass">@this.AtomicMass</p>
-                </div>
-        }
-    </div>
-    <div class="attribution">Data from https://github.com/Bowserinator/Periodic-Table-JSON</div>
+    <div class="detailpane">Detail Pane</div>
+        <div class="maintable">
+            @foreach (var element in dataModel.Elements)
+            {
+                    this.XPos = element.xPos.ToString();
+                    this.Ypos = element.yPos.ToString();
+                    this.AtomicMass = Math.Round(element.atomic_mass.Value, 4).ToString();
+                    this.CategoryColor = this.ConvertCategoryToColor(element.Category);
+                    <div class="element" style="grid-column:@XPos; grid-row: @Ypos; background-color:@CategoryColor" @onclick="@(e => ClickElement(element))">
+                        <p class="atomicnumber">@element.Number</p>
+                        <p class="symbol">@element.Symbol</p>
+                        <span class="tooltiptext">@element.Name</span>
+                        <p class="atomicmass">@this.AtomicMass</p>
+                    </div>
+            }
+        </div>
+        <div class="attribution">Data from https://github.com/Bowserinator/Periodic-Table-JSON</div>
 </body>
 }
 
@@ -48,6 +49,11 @@ else
     protected override async Task OnInitializedAsync()
     {
         dataModel = await PeriodicTableEngine.InitializeData();
+    }
+
+    private void ClickElement(Element element)
+    {
+        this.SetActiveElement(element);
     }
 
     internal string ConvertCategoryToColor(string category)

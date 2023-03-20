@@ -8,8 +8,8 @@ body {
 
 .maintable {
     display: grid;
-    grid-template-columns: repeat(18, 1fr);
-    grid-template-rows: repeat(9, auto);
+    grid-template-columns: repeat(18, 65px);
+    grid-template-rows: repeat(9, 65px);
 }
 
 .atomicnumber {
@@ -73,11 +73,19 @@ body {
     transition: all 1s;
 }
 
+.detailpane {
+    float:right;
+    width:400px;
+    height:100vh;
+    background-color:green
+}
+
 .attribution {
     margin:20px;
     color:white;
     text-align:right;
     font-size:8px;
+    background-color:red;
 }
 
 .title {

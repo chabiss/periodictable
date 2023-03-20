@@ -29,7 +29,7 @@ namespace PeriodicTableMaui.Views
                 {
                     // <local:ElementDetailPane local:ElementDetailPane.Show="{Binding IsDetailPaneVisible, Mode=OneWayToSource}">
                     // The bound property gets set to false, but never to true even though we received the event here
-                    // viewModel.IsDetailPaneVisible = this.DetailPane.IsVisible;
+                    viewModel.IsDetailPaneVisible = this.DetailPane.IsVisible;
                 }
             }
         }

@@ -1,8 +1,38 @@
 ﻿@inherits LayoutComponentBase
-<body>
-    @Body
-</body>
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudPaper Class="pa-4" Style="@($"color:{Theme.Palette.Dark}; background:{Theme.Palette.Black};")">
+    <MudContainer>
+        <MudAppBar Color="Color.Dark" >
+            Periodic Table Of Elements
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        </MudAppBar>
+        <MudDrawer @bind-Open="@_drawerOpen" Anchor="Anchor.End" Color="Color.Dark">
+            <MudDrawerHeader>
+                <MudText Typo="Typo.h6">Properties 1</MudText>            
+            </MudDrawerHeader>
+            <MudText Typo="Typo.body1" >@ActiveElement?.Name</MudText>
+            <MudText Typo="Typo.body1">@ActiveElement?.Name</MudText>
+        </MudDrawer>
+    </MudContainer>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudPaper>
 
 @code {
+    protected void SetActiveElement(PeriodicTableData.Element element)
+    {
+        this.ActiveElement = element;
+        this.StateHasChanged();
+    }
+    protected PeriodicTableData.Element ActiveElement;
+    private MudTheme Theme = new MudTheme();
+    bool _drawerOpen = true;
 
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
 }
