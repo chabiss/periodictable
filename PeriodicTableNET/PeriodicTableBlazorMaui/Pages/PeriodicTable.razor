@@ -9,9 +9,8 @@
 }
 else
 {
-<body style="background-color:black">
+<body style="background-color:black;height:100vh">
     <h3 class="title">Periodic Table of Elements</h3>
-    <div class="detailpane">Detail Pane</div>
         <div class="maintable">
             @foreach (var element in dataModel.Elements)
             {
@@ -54,6 +53,7 @@ else
     private void ClickElement(Element element)
     {
         this.SetActiveElement(element);
+        this.StateHasChanged();
     }
 
     internal string ConvertCategoryToColor(string category)
