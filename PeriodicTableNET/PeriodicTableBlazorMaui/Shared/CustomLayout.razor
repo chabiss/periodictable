@@ -10,29 +10,46 @@
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen" Anchor="Anchor.End" Color="Color.Dark" ClipMode="DrawerClipMode.Always" Elevation="3">
         <MudDrawerHeader>
-            <MudText Typo="Typo.h5">@ElementName</MudText>            
+            <MudText Typo="Typo.h5" Align="Align.Center">@selectedElement?.SelectedElement?.Name</MudText>
         </MudDrawerHeader>
-        <MudText Typo="Typo.body1" >@ActiveElement?.Name</MudText>
-        <MudText Typo="Typo.body1">@ActiveElement?.Name</MudText>
+        <MudText Typo="Typo.body1">Category: @selectedElement?.SelectedElement?.Category</MudText>
+        <p></p>
+        <MudText Typo="Typo.body1">Number: @selectedElement?.SelectedElement?.Number</MudText>
+        <p></p>
+        <MudText Typo="Typo.body1">Mass:@selectedElement?.SelectedElement?.atomic_mass</MudText>
+        <p></p>
+        <MudText Typo="Typo.body1"></MudText>
+        <p></p>
+        <MudText Typo="Typo.body1">@selectedElement?.SelectedElement?.Summary</MudText>
+        <p></p>
+        <MudImage Src="@selectedElement?.SelectedElement?.image?.Url.ToString()"/>
     </MudDrawer>
-    <MudMainContent>
-        @Body
-    </MudMainContent>
+    <CascadingValue Value="@selectedElement">
+        <MudMainContent>
+            @Body
+        </MudMainContent>
+    </CascadingValue>
 
 </MudLayout>
 
 @code {
-    protected void SetActiveElement(PeriodicTableData.Element element)
+    public CustomLayout()
     {
-        this.ActiveElement = element;
+        this.selectedElement = new SelectedElementInfo(new Action(() => this.OnSelectedElementChanged()));
     }
-    protected PeriodicTableData.Element ActiveElement;
+    private Action callback;
+    private SelectedElementInfo selectedElement = null;
+
     private MudTheme Theme = new MudTheme();
     bool _drawerOpen = true;
-    protected string ElementName => this.ActiveElement?.Name;
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    void OnSelectedElementChanged()
+    {
+        this.StateHasChanged();
     }
 }

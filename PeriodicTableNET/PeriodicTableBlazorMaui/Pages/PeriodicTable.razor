@@ -43,6 +43,8 @@ else
     [Parameter]
     public string CategoryColor { get; set; }
 
+    [CascadingParameter]
+    protected SelectedElementInfo? SelectedElementInfo { get; set; }
 
     private PeriodicTableDataModel dataModel;
     protected override async Task OnInitializedAsync()
@@ -52,7 +54,7 @@ else
 
     private void ClickElement(Element element)
     {
-        this.SetActiveElement(element);
+        this.SelectedElementInfo.SetActiveElement(element);
         this.StateHasChanged();
     }
 
