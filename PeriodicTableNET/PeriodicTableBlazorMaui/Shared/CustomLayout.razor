@@ -37,6 +37,12 @@
     {
         this.selectedElement = new SelectedElementInfo(new Action(() => this.OnSelectedElementChanged()));
     }
+
+    void OnSelectedElementChanged()
+    {
+        this.StateHasChanged();
+    }
+
     private Action callback;
     private SelectedElementInfo selectedElement = null;
 
@@ -46,10 +52,5 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
-    }
-
-    void OnSelectedElementChanged()
-    {
-        this.StateHasChanged();
     }
 }
