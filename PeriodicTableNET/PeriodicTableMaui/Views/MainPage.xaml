@@ -84,14 +84,14 @@
 
                     <ScrollView  Grid.Column="0" HorizontalScrollBarVisibility="Always" Orientation="Horizontal" >
                         <Grid BindableLayout.ItemsSource="{Binding Elements}" 
-                              ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"
-                              RowDefinitions="62,62,62,62,62,62,62,62,62,62,62" MaximumWidthRequest="1244" MinimumHeightRequest="1100">
+                              ColumnDefinitions="60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60,60"
+                              RowDefinitions="64,64,64,62,64,64,64,64,64,64,64" MaximumWidthRequest="1080" MinimumHeightRequest="1100">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="viewmodels:ElementViewModel">
                                     <Border x:Name="SelectionBorder"
-                                            HeightRequest="60"
+                                            HeightRequest="64"
                                             Padding="0" 
-                                            Margin="2" 
+                                            Margin="0" 
                                             WidthRequest="60"
                                             Stroke="{Binding IsSelected, Converter={viewmodels:SelectedColorValueConverter}}"
                                             BackgroundColor="{Binding IsSelected, Converter={viewmodels:SelectedColorValueConverter}}"
