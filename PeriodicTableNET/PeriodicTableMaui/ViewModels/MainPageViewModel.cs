@@ -44,6 +44,11 @@ namespace PeriodicTableMaui.ViewModels
 
         public async Task RefreshView()
         {
+            if (this.IsRefreshing)
+            {
+                return;
+            }   
+
             this.IsRefreshing = true;
             PeriodicTableDataModel dataModel = await this.GetDataModelAsync();
             if(dataModel != null)

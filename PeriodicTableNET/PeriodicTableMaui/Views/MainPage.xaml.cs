@@ -14,10 +14,18 @@ namespace PeriodicTableMaui.Views
             this.Loaded += MainPage_Loaded;
         }
 
-        private void MainPage_Loaded(object sender, EventArgs e)
+        private async void MainPage_Loaded(object sender, EventArgs e)
         {
             this.BindingContext = this.viewModel;
-            Task.Run(async () => await viewModel.RefreshView());
+            await RefreshViewAsync();
+        }
+
+        private async Task RefreshViewAsync()
+        {
+            await this.Dispatcher.DispatchAsync(async () =>
+            {
+                await viewModel.RefreshView();
+            });
         }
 
         private void DetailPane_PropertyChanged(object sender, PropertyChangedEventArgs e)
