@@ -8,6 +8,7 @@ namespace PeriodicTableMaui
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(ElementDetail), typeof(ElementDetail));
+            Routing.RegisterRoute(nameof(AllElements), typeof(AllElements));
         }
     }
 }

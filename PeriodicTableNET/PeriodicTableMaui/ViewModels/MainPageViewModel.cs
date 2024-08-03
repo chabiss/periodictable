@@ -90,5 +90,13 @@ namespace PeriodicTableMaui.ViewModels
                 {"element", this.SelectedElement.Element }
             });
         }
+
+        [RelayCommand]
+        async Task GoToListElements(MainPageViewModel mainPageViewModel)
+        {
+            await Shell.Current.GoToAsync(nameof(AllElements), true, new Dictionary<string, object>
+            {
+            });
+        }
     }
 }

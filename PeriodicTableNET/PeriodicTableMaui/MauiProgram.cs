@@ -26,6 +26,7 @@ namespace PeriodicTableMaui
             builder.Services.AddSingleton<MainPageViewModel>();
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<ElementDetail>();
+            builder.Services.AddSingleton<AllElements>();
             builder.Services.AddSingleton<ElementDetailViewModel>();
             return builder.Build();
         }

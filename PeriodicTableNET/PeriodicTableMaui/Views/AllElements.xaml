@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:PeriodicTableMaui.Views"
+             xmlns:viewmodels="clr-namespace:PeriodicTableMaui.ViewModels"
+             xmlns:dataModels="clr-namespace:PeriodicTableData;assembly=PeriodicTableData"
+             x:DataType="viewmodels:MainPageViewModel"
+             BackgroundColor="Black"
+             x:Class="PeriodicTableMaui.Views.AllElements"
+             Title="AllElements">
+    <VerticalStackLayout>
+        <CollectionView
+             ItemsSource="{Binding Elements}"
+             SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout 
+                        x:Name="PeriodicTableViewLayout"
+                        Orientation="Vertical"
+                        VerticalItemSpacing="2"
+                        HorizontalItemSpacing="2" />
+                </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="viewmodels:ElementViewModel">
+                    <Border MaximumHeightRequest="200" 
+                                Padding="0" 
+                                Margin="0" 
+                                ToolTipProperties.Text="{Binding Element.Name}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=GoToDetailsCommand}"
+                                    CommandParameter="{Binding .}"/>
+                        </Border.GestureRecognizers>
+                        <Grid Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <VerticalStackLayout Grid.RowSpan="2" MaximumHeightRequest="60" MinimumWidthRequest="60" MaximumWidthRequest="600" Padding="0" Margin="0" BackgroundColor="{Binding Element.Category, Converter={viewmodels:CategoryToColorConverter}}">
+                                <Label
+                                            Padding="0"
+                                            Margin="2,0,0,0"
+                                            FontSize="10"
+                                            Text="{Binding Element.Number}"
+                                        />
+                                <Label
+                                            Padding="0" Margin="0,0"
+                                            Text="{Binding Element.Symbol}"
+                                            FontSize="20"
+                                            HorizontalTextAlignment="Center"
+                                        />
+                                <Label
+                                            Padding="0,3,0,0"
+                                            Text="{Binding Element.atomic_mass}"
+                                            FontSize="7"
+                                            HorizontalTextAlignment="Center"
+                                        />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1" Text="{Binding Element.Name}" Margin="5,0,0,10"  FontAttributes="Bold" TextColor="White" />
+                            <Label Grid.Column="2" Text="{Binding Element.Summary}" Margin="5,0,0,0" FontAttributes="Bold" TextColor="White" VerticalOptions="End"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>

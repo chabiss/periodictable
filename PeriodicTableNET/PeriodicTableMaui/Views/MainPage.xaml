@@ -221,14 +221,21 @@
                 </Grid>
             </ContentView>
         </RefreshView>
-           <Button
+        <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center">
+            <Button
                 x:Name="InitialData"
-                Grid.Row="1"
                 Text="Refresh"
                 SemanticProperties.Hint="Initialize Data Engine"
-                Command="{Binding GetTableElementsCommand}"
-                HorizontalOptions="Center" />
-         <Label Grid.Row="2" FontSize="10" HorizontalTextAlignment="End"  Text="Data from https://github.com/Bowserinator/Periodic-Table-JSON" />
+                Command="{Binding GetTableElementsCommand}" />
+            <Button
+                x:Name="AllElements"
+                Text="List All Elements"
+                SemanticProperties.Hint="List All Element"
+                Command="{Binding GoToListElementsCommand}"
+                CommandParameter="{Binding .}" />           
+        </HorizontalStackLayout> 
+
+         <Label Grid.Row="3" FontSize="10" HorizontalTextAlignment="End"  Text="Data from https://github.com/Bowserinator/Periodic-Table-JSON" />
         </Grid>
         <!--</VerticalStackLayout>-->
 

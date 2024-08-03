@@ -20,6 +20,9 @@
     <MauiXaml Update="AppShell.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
+    <MauiXaml Update="Views\AllElements.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="Views\ElementDetail.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
