@@ -38,7 +38,16 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <VerticalStackLayout Grid.RowSpan="2" MinimumHeightRequest="60" MaximumHeightRequest="60" MinimumWidthRequest="60" MaximumWidthRequest="60" Padding="0" Margin="0" BackgroundColor="{Binding Element.Category, Converter={viewmodels:CategoryToColorConverter}}">
+                        <VerticalStackLayout Grid.RowSpan="2" MinimumHeightRequest="60" MaximumHeightRequest="60" MinimumWidthRequest="60" MaximumWidthRequest="60" Padding="0" Margin="0">
+                            <VerticalStackLayout.BackgroundColor>
+                                <MultiBinding Converter="{StaticResource ElementToColorConverter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Source="RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}, Path=ViewMode" />
+                                        <Binding Path="Element.category" />
+                                        <Binding Path="Element.Lickability" />
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </VerticalStackLayout.BackgroundColor>
                             <Label
                                             Padding="0"
                                             Margin="2,0,0,0"

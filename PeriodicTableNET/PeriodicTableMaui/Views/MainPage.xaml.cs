@@ -41,5 +41,10 @@ namespace PeriodicTableMaui.Views
                 }
             }
         }
+
+        private void Picker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

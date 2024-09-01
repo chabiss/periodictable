@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace PeriodicTableData
 {
+    public enum Lickability
+    {
+        Sure_Probably_Fine,
+        Maybe_No_a_Good_Idea,
+        You_Should_Not,
+        Please_Reconsider
+    }
+
     public class Element
     {
         public string? Name { get; set; }
@@ -38,5 +46,6 @@ namespace PeriodicTableData
         public string? cpkHex { get; set; }
         public Image? image { get; set; }
         public bool IsSelected { get; set; }
-    }
+        public Lickability Lickability {get;set;}
+}
 }
