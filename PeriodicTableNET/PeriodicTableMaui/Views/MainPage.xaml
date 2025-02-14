@@ -147,7 +147,7 @@
                                                     TextColor="Black"
                                                     FontAttributes="Bold"
                                                     Padding="0,3,0,0"
-                                                    Text="{Binding Element.atomic_mass}"
+                                                    Text="{Binding Element.AtomicMass}"
                                                     FontSize="7"
                                                     HorizontalTextAlignment="Center"
                                                 />

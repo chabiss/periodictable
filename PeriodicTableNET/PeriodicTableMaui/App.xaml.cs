@@ -8,9 +8,12 @@ namespace PeriodicTableMaui
         public App()
         {
             InitializeComponent();
+        }
 
-            MainPage = new AppShell();
-            // this.DataEngline = new PeriodicTableDataEngine();
+        protected override Window CreateWindow(IActivationState activationState)
+        {
+            var window = new Window(new AppShell());
+            return window;
         }
     }
 }

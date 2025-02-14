@@ -4,9 +4,9 @@ namespace PeriodicTableMaui.Views;
 
 public partial class AllElements : ContentPage
 {
-    private MainPageViewModel viewModel;
+    private AllElementsViewModel viewModel;
 
-    public AllElements(MainPageViewModel viewModel)
+    public AllElements(AllElementsViewModel viewModel)
     {
         InitializeComponent();
         this.viewModel = viewModel;

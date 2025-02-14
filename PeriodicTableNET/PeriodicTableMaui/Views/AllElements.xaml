@@ -4,10 +4,13 @@
              xmlns:local="clr-namespace:PeriodicTableMaui.Views"
              xmlns:viewmodels="clr-namespace:PeriodicTableMaui.ViewModels"
              xmlns:dataModels="clr-namespace:PeriodicTableData;assembly=PeriodicTableData"
-             x:DataType="viewmodels:MainPageViewModel"
              BackgroundColor="Black"
+             x:DataType="viewmodels:AllElementsViewModel"
              x:Class="PeriodicTableMaui.Views.AllElements"
              Title="AllElements">
+    <ContentPage.Resources>
+        <viewmodels:ElementToColorConverter x:Key="ElementToColorConverter" />
+    </ContentPage.Resources>
     <CollectionView
              ItemsSource="{Binding Elements}"
              SelectionMode="None">
@@ -20,30 +23,24 @@
         </CollectionView.ItemsLayout>
         <CollectionView.ItemTemplate>
             <DataTemplate x:DataType="viewmodels:ElementViewModel">
-                <Border MaximumHeightRequest="200" 
-                                Padding="0" 
+                <Border         Padding="0" 
                                 Margin="0" 
                                 ToolTipProperties.Text="{Binding Element.Name}">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer 
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}}, Path=GoToDetailsCommand}"
-                                    CommandParameter="{Binding .}"/>
-                    </Border.GestureRecognizers>
                     <Grid Padding="10">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <VerticalStackLayout Grid.RowSpan="2" MinimumHeightRequest="60" MaximumHeightRequest="60" MinimumWidthRequest="60" MaximumWidthRequest="60" Padding="0" Margin="0">
+                        <VerticalStackLayout Grid.RowSpan="2" MinimumHeightRequest="100" MaximumHeightRequest="100" MinimumWidthRequest="100" MaximumWidthRequest="100" Padding="0" Margin="0">
                             <VerticalStackLayout.BackgroundColor>
                                 <MultiBinding Converter="{StaticResource ElementToColorConverter}">
                                     <MultiBinding.Bindings>
-                                        <Binding Source="RelativeSource AncestorType={x:Type viewmodels:MainPageViewModel}, Path=ViewMode" />
-                                        <Binding Path="Element.category" />
+                                        <Binding Source="{RelativeSource AncestorType={x:Type viewmodels:AllElementsViewModel}}" Path="ViewMode" />
+                                        <Binding Path="Element.Category" />
                                         <Binding Path="Element.Lickability" />
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
@@ -51,24 +48,27 @@
                             <Label
                                             Padding="0"
                                             Margin="2,0,0,0"
-                                            FontSize="10"
+                                            FontSize="15"
+                                            TextColor="Black"
                                             Text="{Binding Element.Number}"
                                         />
                             <Label
                                             Padding="0" Margin="0,0"
                                             Text="{Binding Element.Symbol}"
-                                            FontSize="20"
+                                            FontSize="30"
+                                            TextColor="Black"
                                             HorizontalTextAlignment="Center"
                                         />
                             <Label
                                             Padding="0,3,0,0"
-                                            Text="{Binding Element.atomic_mass}"
-                                            FontSize="7"
+                                            Text="{Binding Element.AtomicMass}"
+                                            FontSize="15"
+                                            TextColor="Black"
                                             HorizontalTextAlignment="Center"
                                         />
                         </VerticalStackLayout>
-                        <Label Grid.Column="1" Text="{Binding Element.Name}" Margin="5,0,0,10"  FontAttributes="Bold" TextColor="White" />
-                        <Label Grid.Column="2" Text="{Binding Element.Summary}" Margin="5,0,0,0" FontAttributes="Bold" TextColor="White" VerticalOptions="End"/>
+                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding Element.Name}" Margin="5,0,0,10"  FontAttributes="Bold" TextColor="White" />
+                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding Element.Summary}" Margin="5,0,0,0" FontAttributes="Bold" TextColor="White" VerticalOptions="Start" LineBreakMode="WordWrap" />
                     </Grid>
                 </Border>
             </DataTemplate>

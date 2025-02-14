@@ -46,6 +46,8 @@ namespace PeriodicTableData
         public string? cpkHex { get; set; }
         public Image? image { get; set; }
         public bool IsSelected { get; set; }
-        public Lickability Lickability {get;set;}
-}
+        public Lickability Lickability { get; set; }
+
+        public float AtomicMass => (float)Math.Round(this.atomic_mass ?? 0, 2);
+    }
 }

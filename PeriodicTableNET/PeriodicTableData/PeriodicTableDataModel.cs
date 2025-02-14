@@ -8,7 +8,7 @@ namespace PeriodicTableData
 {
     public class PeriodicTableDataModel
     {
-        public List<string> Order { get; set; }
-        public List<Element> Elements { get; set; }
+        public List<string> Order { get; set; } = null!;
+        public List<Element> Elements { get; set; } = null!;
     }
 }

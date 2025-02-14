@@ -142,7 +142,7 @@ namespace PeriodicTableData
             };
         }
 
-        public async Task<PeriodicTableDataModel> InitializeData()
+        public async Task<PeriodicTableDataModel?> InitializeData()
         {
 
             // Create a new instance of the HttpClient class.

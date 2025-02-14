@@ -110,6 +110,7 @@ namespace PeriodicTableMaui.ViewModels
         {
             await Shell.Current.GoToAsync(nameof(AllElements), true, new Dictionary<string, object>
             {
+                {"viewmode",  mainPageViewModel.ViewMode}
             });
         }
 
