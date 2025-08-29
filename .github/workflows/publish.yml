@@ -1,0 +1,199 @@
+name: Build and Publish
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Create a release'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  DOTNET_VERSION: '9.0.x'
+  PROJECT_PATH: './PeriodicTableNET'
+
+jobs:
+  build:
+    name: Build for ${{ matrix.platform }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - platform: android
+            runner: ubuntu-latest
+            project: PeriodicTableMaui
+            framework: net9.0-android
+            output: android-app
+          - platform: android-blazor
+            runner: ubuntu-latest
+            project: PeriodicTableBlazorMaui
+            framework: net9.0-android
+            output: android-blazor-app
+          - platform: windows
+            runner: windows-latest
+            project: PeriodicTableMaui
+            framework: net9.0-windows10.0.19041.0
+            output: windows-app
+          - platform: windows-blazor
+            runner: windows-latest
+            project: PeriodicTableBlazorMaui
+            framework: net9.0-windows10.0.19041.0
+            output: windows-blazor-app
+          - platform: maccatalyst
+            runner: macos-latest
+            project: PeriodicTableMaui
+            framework: net9.0-maccatalyst
+            output: maccatalyst-app
+          - platform: maccatalyst-blazor
+            runner: macos-latest
+            project: PeriodicTableBlazorMaui
+            framework: net9.0-maccatalyst
+            output: maccatalyst-blazor-app
+          - platform: ios
+            runner: macos-latest
+            project: PeriodicTableBlazorMaui
+            framework: net9.0-ios
+            output: ios-app
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install MAUI workload
+      run: dotnet workload install maui
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.PROJECT_PATH }}/${{ matrix.project }}/${{ matrix.project }}.csproj
+
+    - name: Build project
+      run: |
+        dotnet build ${{ env.PROJECT_PATH }}/${{ matrix.project }}/${{ matrix.project }}.csproj \
+          --configuration Release \
+          --framework ${{ matrix.framework }} \
+          --no-restore
+
+    - name: Publish project (Windows)
+      if: matrix.platform == 'windows' || matrix.platform == 'windows-blazor'
+      run: |
+        dotnet publish ${{ env.PROJECT_PATH }}/${{ matrix.project }}/${{ matrix.project }}.csproj \
+          --configuration Release \
+          --framework ${{ matrix.framework }} \
+          --output ./publish/${{ matrix.output }} \
+          --no-restore \
+          --no-build
+
+    - name: Publish project (Android)
+      if: matrix.platform == 'android' || matrix.platform == 'android-blazor'
+      run: |
+        dotnet publish ${{ env.PROJECT_PATH }}/${{ matrix.project }}/${{ matrix.project }}.csproj \
+          --configuration Release \
+          --framework ${{ matrix.framework }} \
+          --output ./publish/${{ matrix.output }} \
+          --no-restore \
+          --no-build
+
+    - name: Publish project (macOS Catalyst)
+      if: matrix.platform == 'maccatalyst' || matrix.platform == 'maccatalyst-blazor'
+      run: |
+        dotnet publish ${{ env.PROJECT_PATH }}/${{ matrix.project }}/${{ matrix.project }}.csproj \
+          --configuration Release \
+          --framework ${{ matrix.framework }} \
+          --output ./publish/${{ matrix.output }} \
+          --no-restore \
+          --no-build
+
+    - name: Publish project (iOS)
+      if: matrix.platform == 'ios'
+      run: |
+        dotnet publish ${{ env.PROJECT_PATH }}/${{ matrix.project }}/${{ matrix.project }}.csproj \
+          --configuration Release \
+          --framework ${{ matrix.framework }} \
+          --output ./publish/${{ matrix.output }} \
+          --no-restore \
+          --no-build
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.output }}
+        path: ./publish/${{ matrix.output }}
+        retention-days: 30
+
+  create-release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && inputs.create_release)
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: ./artifacts
+
+    - name: Create release archives
+      run: |
+        cd ./artifacts
+        for dir in */; do
+          if [ -d "$dir" ]; then
+            tar -czf "${dir%/}.tar.gz" -C "$dir" .
+            zip -r "${dir%/}.zip" "$dir"
+          fi
+        done
+
+    - name: Get tag name
+      id: tag
+      run: |
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        else
+          echo "tag=v$(date +'%Y.%m.%d')-${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.tag.outputs.tag }}
+        name: Periodic Table Release ${{ steps.tag.outputs.tag }}
+        body: |
+          ## Periodic Table MAUI Applications
+          
+          This release contains the following applications:
+          
+          ### MAUI Controls Version
+          - **Android**: `android-app.tar.gz` / `android-app.zip`
+          - **Windows**: `windows-app.tar.gz` / `windows-app.zip`
+          - **macOS Catalyst**: `maccatalyst-app.tar.gz` / `maccatalyst-app.zip`
+          
+          ### MAUI Blazor Hybrid Version
+          - **Android**: `android-blazor-app.tar.gz` / `android-blazor-app.zip`
+          - **Windows**: `windows-blazor-app.tar.gz` / `windows-blazor-app.zip`
+          - **macOS Catalyst**: `maccatalyst-blazor-app.tar.gz` / `maccatalyst-blazor-app.zip`
+          - **iOS**: `ios-app.tar.gz` / `ios-app.zip`
+          
+          ## Installation
+          Download the appropriate package for your platform and extract it to run the Periodic Table application.
+        files: |
+          ./artifacts/*.tar.gz
+          ./artifacts/*.zip
+        draft: false
+        prerelease: ${{ contains(steps.tag.outputs.tag, 'alpha') || contains(steps.tag.outputs.tag, 'beta') || contains(steps.tag.outputs.tag, 'rc') }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
